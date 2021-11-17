@@ -1,20 +1,17 @@
+import { DataGrid } from '@mui/x-data-grid';
 
+const columns  = [
+    { field: 'author', headerName: 'Author', width: 150 },
+    { field: 'title', headerName: 'Title', width: 250 },
+  ];
 
 export function BookListView({books}) {
+    console.log(books)
     return (
-        books.map((book) => {
-            let emphasised = book.isEmpasised ? " book-emphasised" : ""
-            return (
-                <div className= {"bookContainer " + book.backgroundClass + emphasised}>
-                    <div className="book-author">
-                        {book.author}
-                    </div>
-                    <div className="book-title">
-                        {book.title}
-                    </div>
-
-                </div>
-            )
-        })
+        <DataGrid 
+            rows={books} 
+            columns={columns} 
+            autoHeight={true}
+        />
     )
 }

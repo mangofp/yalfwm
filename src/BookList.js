@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { makeBookListData } from "../src/controllers/bookController"
 import { BookListView } from "./BookListView";
+import SearchAppBar from "./SearchAppBar"
+import { useState, useEffect } from "react";
 
 export function BookList() {
   const { isLoading, error, data, isFetching } = useQuery("repoData", () =>
@@ -13,13 +15,25 @@ export function BookList() {
     ).then((res) => res.json()).then((data) => makeBookListData(data))
   );
 
-  if (isLoading) return "Loading...";
+  const [booksData, setBooksData] = useState([])
+
+  useEffect(()=>{
+    setBooksData(data)
+  }, [data])
+
+  const actionFilter = (filter) => {
+    //TODO do the actual fitlering of bookData
+    console.log(filter)
+  }
+
+  if (isLoading || !booksData) return "Loading...";
 
   if (error) return "An error has occurred: " + error.message;
 
   return (
       <>
-        <BookListView books={data} />
+        <SearchAppBar actionFilter={actionFilter} />
+        <BookListView books={booksData}  />
       </>
   );
 }
